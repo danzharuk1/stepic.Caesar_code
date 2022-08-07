@@ -2,12 +2,11 @@ direction = ''
 dictionary = ''
 CHAR = '~!@#$%^&*()_-=+-/*"|{}[],. \'1234567890'
 TEXT = ''
-result = ''
 step = 0
 
 print('Вас приветствует "Шифр Цезаря"')
 
-print('Выберите направление(шифрование/дешифрование)')
+print('Выберите направление(шифрование/дешифровка)')
 while True:
     t = input().lower()
 
@@ -15,8 +14,9 @@ while True:
         direction = t
         break
 
-    elif t == 'дешифрование':
+    elif t == 'дешифровка':
         direction = t
+        dirflag = True
         break
 
 print('Выберите язык алфавита(русский/английский)')
@@ -34,7 +34,7 @@ print('укажите шаг:')
 while True:
     t = input()
     for i in range(len(t)):
-        if t[i] not in '0123456789':
+        if t[i] not in '0123456789' or t == '':
             break
     else:
         step = int(t)
@@ -43,7 +43,38 @@ while True:
 print('Введите ваш текст')
 TEXT = input()
 
-if direction == 'шифрование':
+result = ''
+if direction == 'дешифровка':
+    for i in range(len(TEXT)):
+        if TEXT[i] not in CHAR:
+            if dictionary == 'английский':
+                if TEXT[i].isupper():
+                    if ord(TEXT[i]) - step < 65:
+                        result += chr(ord(TEXT[i]) - step + 26)
+                    else:
+                        result += chr(ord(TEXT[i]) - step)
+                else:
+                    if ord(TEXT[i]) - step < 97:
+                        result += chr(ord(TEXT[i]) - step + 26)
+                    else:
+                        result += chr(ord(TEXT[i]) - step)
+            else:
+                if TEXT[i].isupper():
+                    if ord(TEXT[i]) - step < 1040:
+                        result += chr(ord(TEXT[i]) - step + 32)
+                    else:
+                        result += chr(ord(TEXT[i]) - step)
+
+                else:
+                    if ord(TEXT[i]) - step < 1072:
+                        result += chr(ord(TEXT[i]) - step + 32)
+                    else:
+                        result += chr(ord(TEXT[i]) - step)
+
+        else:
+            result += TEXT[i]
+
+else:
     for i in range(len(TEXT)):
         if TEXT[i] not in CHAR:
             if dictionary == 'английский':
@@ -56,7 +87,7 @@ if direction == 'шифрование':
                     if ord(TEXT[i]) + step > 122:
                         result += chr((ord(TEXT[i]) + step + 97) % 123)
                     else:
-                        result += chr(ord(TEXT[i]) + step)
+                         result += chr(ord(TEXT[i]) + step)
             else:
                 if TEXT[i].isupper():
                     if ord(TEXT[i]) + step > 1071:
@@ -73,6 +104,4 @@ if direction == 'шифрование':
         else:
             result += TEXT[i]
 
-else:
-    pass
 print(result)
